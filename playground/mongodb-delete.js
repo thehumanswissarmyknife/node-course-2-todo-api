@@ -26,16 +26,18 @@ MongoClient.connect('mongodb://localhost:30001/TodoApp', (err, db) => {
 	// 	console.log(result);
 	// });
 
-	db.collection('Users').deleteMany({name: 'dvocke'}).then((result) => {
-		console.log(result);
-	});
+	// db.collection('Users').deleteMany({name: 'dvocke'}).then((result) => {
+	// 	console.log(result);
+	// });
 
-	db.collection('Users').findOneAndDelete({
-		_id: new ObjectID('598858a7f6e34622610b6b3a')
-	}).then((result) => {
-		console.log('User geloescht');
-		console.log(result);
-	});
+	// db.collection('Users').findOneAndDelete({
+	// 	_id: new ObjectID('598858a7f6e34622610b6b3a')
+	// }).then((result) => {
+	// 	console.log('User geloescht');
+	// 	console.log(result);
+	// });
+
+db.collection('Users').find({name: 'dvocke'} && {age: 39})
 
 	db.close();
 });
