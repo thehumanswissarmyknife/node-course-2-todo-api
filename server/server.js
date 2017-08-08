@@ -25,3 +25,5 @@ app.post('/todos', (req, res) => {
 app.listen(listeningPort, () => {
 	console.log(`Listening on port ${listeningPort}`);
 });
+
+module.exports = {app};
