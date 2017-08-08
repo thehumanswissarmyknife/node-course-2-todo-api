@@ -52,7 +52,7 @@ app.get('/todos', (reg, res) => {
 app.delete('/todos/:id', (req, res) => {
 	var id = req.params.id;
 
-	if(!ObjectID.isValid) {
+	if(!ObjectID.isValid(id)) {
 		return res.status(404).send({});
 	}
 
@@ -64,7 +64,7 @@ app.delete('/todos/:id', (req, res) => {
 	}).catch((e) => {
 		res.status(400).send({});
 	});
-})
+});
 
 app.listen(listeningPort, () => {
 	console.log(`Listening on port ${listeningPort}`);
