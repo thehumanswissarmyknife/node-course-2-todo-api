@@ -8,7 +8,7 @@ var {User} = require('./models/user');
 var {ObjectID} = require('mongodb');
 
 var app = express();
-var listeningPort = 3000;
+var listeningPort = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -48,6 +48,23 @@ app.get('/todos', (reg, res) => {
 		res.status(400).send(e);
 	});
 });
+
+app.delete('/todos/:id', (req, res) => {
+	var id = req.params.id;
+
+	if(!ObjectID.isValid) {
+		return res.status(404).send({});
+	}
+
+	Todo.findByIdAndRemove(id).then((todo) => {
+		if(!todo) {
+			return res.status(404).send({});
+		}
+		res.status(200).send({todo});
+	}).catch((e) => {
+		res.status(400).send({});
+	});
+})
 
 app.listen(listeningPort, () => {
 	console.log(`Listening on port ${listeningPort}`);
