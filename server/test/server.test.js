@@ -10,7 +10,9 @@ const todos = [{
 	text: 'First todo'
 }, {
 	_id: new ObjectID(),
-	text: 'second todo'
+	text: 'second todo',
+	completed: true,
+	completedAt: 333
 }, {
 	_id: new ObjectID(),
 	text: 'Third todo'
@@ -141,5 +143,46 @@ describe('DELETE /todos/:id', ()=> {
 			.expect(404)
 			.end(done);
 
+	});
+});
+
+describe('PATCH /todos/:id', () => {
+	it('should change the text, turn completed to complete', (done) => {
+		var hexId = todos[0]._id.toHexString();
+		var text = 'empty text'
+
+		request(app)
+			.patch(`/todos/${hexId}`)
+			.send({
+				completed: true,
+				text
+			})
+			.expect(200)
+			.expect((res) => {
+				expect(res.body.todo.text).toBe(text);
+				expect(res.body.todo.completed).toBe(true);
+				expect(res.body.todo.completedAt).toBeA('number');
+			})
+			.end(done)
+
+	});
+
+	it('should change hte text of the second todo and turn completed to false', (done) => {
+		var hexId = todos[1]._id.toHexString();
+		var text = 'my text is dumb';
+
+		request(app)
+			.patch(`/todos/${hexId}`)
+			.send({
+				text,
+				completed: false
+			})
+			.expect(200)
+			.expect((res) => {
+				expect(res.body.todo.text).toBe(text);
+				expect(res.body.todo.completed).toBe(false);
+				expect(res.body.todo.completedAt).toNotExist();
+			})
+			.end(done)
 	});
 });
